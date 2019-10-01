@@ -14,6 +14,7 @@ using std::vector;
 
 u32 read32(FILE*);
 u8  read8(FILE*);
+void write64(FILE*, u64);
 void write32(FILE*, u32);
 void write16(FILE*, u16);
 
@@ -46,6 +47,7 @@ struct bitstream
 	u32 serial;
 	u32 last_page;
 	u32 stream_length;
+	u64 granules;
 	std::vector<std::vector<u8> > packets;
 };
 
@@ -127,6 +129,8 @@ int main(int argc, char** args)
 		//if( head.header_type != 1 )
 		BS.last_page++;
 		
+		BS.granules = head.time_pos;
+
 		// read the segment sizes
 		std::array<u8, 255> segbuf;
 		read_array(fp, segbuf, head.num_segments);
@@ -160,6 +164,7 @@ int main(int argc, char** args)
 	{
 		write32(outfp, BS.serial);
 		write32(outfp, BS.stream_length);
+		write64(outfp, BS.granules);
 		write32(outfp, BS.packets.size());
 		for(auto& packet : BS.packets)
 		{
@@ -197,5 +202,15 @@ void write16(FILE* fp, u16 val)
 	int unu = fwrite(&val, 1, 2, fp);
 	return;
 }
+
+void write64(FILE* fp, u64 val)
+{
+	int unu = fwrite(&val, 1, 8, fp);
+	return;
+}
+
+
+
+
 
 

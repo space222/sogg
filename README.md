@@ -6,8 +6,8 @@ warn if they aren't. Shouldn't be too hard to do a separate pass to properly re-
 hoping that won't be necessary most of the time.
 
 # format
-Self-explanatory from the end of the code, but for each stream writes out a header of three 32bit values: the serial used in the original Ogg file,
-followed by the total stream length (in bytes) and the number of packets. This is followed by the packets, each one
-prefixed with only a 16bit length value.
+Self-explanatory from the end of the code, but for each stream writes out a header of: the serial used in the original Ogg file (32bit),
+followed by the total stream length (in bytes, 32bits), the final timestamp of the Ogg (64bits), and the number of packets (32bit). 
+This is followed by the packets, each one prefixed with only a 16bit length value.
 
 
